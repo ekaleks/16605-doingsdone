@@ -85,9 +85,9 @@ $tasks = [
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                    <?php foreach ($projects as $project => $val): ?>
+                    <?php foreach ($projects as $project => $value): ?>
                         <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#"><?=$val; ?></a>
+                            <a class="main-navigation__list-item-link" href="#"><?=$value; ?></a>
                             <span class="main-navigation__list-item-count">0</span>
                         </li>
                     <?php endforeach; ?>
@@ -123,13 +123,13 @@ $tasks = [
                 </div>
 
                 <table class="tasks">
-                <?php foreach ($tasks as $task => $val): ?>
-                <tr class="tasks__item task <?php if ($val['done'] == true): ?>task--completed<?php endif; ?>
-                <?php if( $val['done'] == true && $show_complete_tasks == 0): ?>hidden<?php endif; ?>">
+                <?php foreach ($tasks as $task => $value): ?>
+                <tr class="tasks__item task <?php if ($value['done'] == true): ?>task--completed<?php endif; ?>
+                <?php if( $value['done'] == true && $show_complete_tasks == 0): ?>hidden<?php endif; ?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
                                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text"><?=$val['name'];?></span>
+                                <span class="checkbox__text"><?=$value['name'];?></span>
                             </label>
                         </td>
 
@@ -137,7 +137,7 @@ $tasks = [
                             <a class="download-link" href="#">Home.psd</a>
                         </td>
 
-                        <td class="task__date"><?=$val['date'];?></td>
+                        <td class="task__date"><?=$value['date'];?></td>
                     </tr>
                     <?php endforeach;?>
                 </table>
