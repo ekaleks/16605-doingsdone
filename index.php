@@ -85,7 +85,7 @@ $tasks = [
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                    <?php foreach ($projects as $key => $val): ?>
+                    <?php foreach ($projects as $project => $val): ?>
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#"><?=$val; ?></a>
                             <span class="main-navigation__list-item-count">0</span>
@@ -123,7 +123,7 @@ $tasks = [
                 </div>
 
                 <table class="tasks">
-                <?php foreach ($tasks as $key => $val): ?>
+                <?php foreach ($tasks as $task => $val): ?>
                 <tr class="tasks__item task <?php if ($val['done'] == true): ?>task--completed<?php endif; ?>
                 <?php if( $val['done'] == true && $show_complete_tasks == 0): ?>hidden<?php endif; ?>">
                         <td class="task__select">
