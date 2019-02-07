@@ -1,7 +1,7 @@
 <?php
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
-$projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
+$projects = ['Входящие', 'Учёба', 'Работа', 'Домашние дела', 'Авто'];
 $tasks = [
     [
         'name' => 'Собеседование в IT компании',
@@ -40,6 +40,17 @@ $tasks = [
         'done' => false
     ]
 ];
+
+function countTasksInProject($tasks, $projectName) {
+    $count = 0;
+    foreach ($tasks as $task) {
+    if ( $task['category'] == $projectName) {
+    $count = $count+1;
+}
+    }
+
+    return $count;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -88,7 +99,7 @@ $tasks = [
                     <?php foreach ($projects as $project): ?>
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#"><?=$project; ?></a>
-                            <span class="main-navigation__list-item-count">0</span>
+                            <span class="main-navigation__list-item-count"><?=countTasksInProject($tasks, $project); ?></span>
                         </li>
                     <?php endforeach; ?>
                     </ul>
