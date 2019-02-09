@@ -13,5 +13,17 @@
     $result = ob_get_clean();
 
     return $result;
+};
+
+function countTasksInProject($tasks, $projectName) {
+    $count = 0;
+    foreach ($tasks as $task) {
+    if ( $task['category'] === $projectName) {
+    $count++;
 }
+    }
+
+    return $count;
+};
+
 ?>

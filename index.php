@@ -41,20 +41,9 @@ $tasks = [
     ]
 ];
 
-function countTasksInProject($tasks, $projectName) {
-    $count = 0;
-    foreach ($tasks as $task) {
-    if ( $task['category'] === $projectName) {
-    $count = $count++;
-}
-    }
-
-    return $count;
-};
-
 require_once('functions.php');
 
-$content = include_template('../templates/index.php', ['show_complete_tasks' => $show_complete_tasks, 'tasks' => $tasks]);
+$content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks,]);
 
 
 $layout = include_template('layout.php',
