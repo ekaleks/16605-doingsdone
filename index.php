@@ -29,7 +29,7 @@ $tasks = [
     ],
     [
         'name' => 'Купить корм для кота',
-        'date' => 'Нет',
+        'date' => '11.02.2019',
         'category' => 'Домашние дела',
         'done' => false
     ],
@@ -44,7 +44,6 @@ $tasks = [
 require_once('functions.php');
 
 $content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks,]);
-
 
 $layout = include_template('layout.php',
 ['content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
