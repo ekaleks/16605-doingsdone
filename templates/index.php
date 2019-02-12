@@ -23,10 +23,9 @@
 
 <table class="tasks">
 <?php foreach ($tasks as $task): ?>
-<tr class="tasks__item task <?php if ($task['done'] == true): ?>task--completed<?php endif; ?>
-<?php if( $task['done'] == true && $show_complete_tasks == 0): ?> hidden<?php endif; ?>
-<?php if (((floor((strtotime($task['date']) - time())/3600))) <= 24 && (strtotime($task['date'])) !== false): ?>task--important<?php endif; ?>
-">
+<tr class="tasks__item task <?php if ($task['is_done'] == true): ?>task--completed<?php endif; ?>
+<?php if ( $task['is_done'] == true && $show_complete_tasks == 0): ?> hidden<?php endif; ?>
+<?php if ($task['is_important'] === true): ?>task--important<?php endif; ?>">
         <td class="task__select">
             <label class="checkbox task__checkbox">
                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
