@@ -17,7 +17,6 @@ CREATE TABLE tasks (
     title CHAR(128) NOT NULL,
     user_file CHAR(128),
     deadline TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT NOT NULL UNIQUE,
     project_id INT NOT NULL UNIQUE,
     status TINYINT DEFAULT 0
 );
