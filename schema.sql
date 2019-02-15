@@ -7,17 +7,17 @@ USE things_in_order;
 CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title CHAR(64) NOT NULL,
-    user_id INT NOT NULL UNIQUE
+    user_id INT NOT NULL
 );
 
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    date_creation TIMESTAMP NOT NULL,
-    date_completion TIMESTAMP NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_completion TIMESTAMP,
     title CHAR(128) NOT NULL,
     user_file CHAR(128),
-    deadline TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    project_id INT NOT NULL UNIQUE,
+    deadline TIMESTAMP,
+    project_id INT NOT NULL,
     status TINYINT DEFAULT 0
 );
 
