@@ -14,7 +14,7 @@ CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_completion TIMESTAMP,
-    title_task CHAR(128) NOT NULL,
+    title CHAR(128) NOT NULL,
     user_file CHAR(128),
     deadline CHAR(11),
     project_id INT NOT NULL,

@@ -18,12 +18,23 @@
 function countTasksInProject($tasks, $projectName) {
     $count = 0;
     foreach ($tasks as $task) {
-    if ( $task['title'] === $projectName) {
+    if ( $task['category'] === $projectName) {
     $count++;
 }
     }
 
     return $count;
+};
+
+function get_result_sql_query($connect, $sql_query){
+    $result = mysqli_query($connect, $sql_query);
+    if($result === false) {
+        $error = mysqli_error($connect);
+        print('Ошибка MySQL:' . $error);
+    }
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $result;
 };
 
 ?>

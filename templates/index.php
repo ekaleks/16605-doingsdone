@@ -23,13 +23,13 @@
 
 <table class="tasks">
 <?php foreach ($tasks as $task): ?>
-<tr class="tasks__item task <?php if ($task['status'] == true): ?>task--completed<?php endif; ?>
-<?php if ( $task['status'] == true && $show_complete_tasks === 0): ?> hidden<?php endif; ?>
+<tr class="tasks__item task <?php if ($task['is_done'] == true): ?>task--completed<?php endif; ?>
+<?php if ( $task['is_done'] == true && $show_complete_tasks === 0): ?> hidden<?php endif; ?>
 <?php if ($task['is_important'] === true): ?> task--important<?php endif; ?>">
         <td class="task__select">
             <label class="checkbox task__checkbox">
                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                <span class="checkbox__text"><?=htmlspecialchars($task['title_task']);?></span>
+                <span class="checkbox__text"><?=htmlspecialchars($task['name']);?></span>
             </label>
         </td>
 
@@ -37,7 +37,7 @@
             <a class="download-link" href="#">Home.psd</a>
         </td>
 
-        <td class="task__date"><?=htmlspecialchars($task['deadline']);?></td>
+        <td class="task__date"><?=htmlspecialchars($task['date']);?></td>
     </tr>
     <?php endforeach;?>
 </table>
