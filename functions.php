@@ -18,7 +18,7 @@
 function countTasksInProject($tasks, $projectName) {
     $count = 0;
     foreach ($tasks as $task) {
-    if ( $task['category'] === $projectName) {
+    if ( $task['title'] === $projectName) {
     $count++;
 }
     }
