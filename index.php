@@ -47,11 +47,9 @@ $show_complete_tasks = rand(0, 1);
 require_once('functions.php');
 require_once('connect.php');
 
-$sql_query_projects = 'SELECT title FROM projects WHERE user_id = 3';
-$projects = get_result_sql_query($connect, $sql_query_projects);
+$projects = get_projects_from_db_for_user($connect);
 
-$sql_query_tasks = 'SELECT t.title AS name, deadline AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = 3';
-$tasks = get_result_sql_query($connect, $sql_query_tasks);
+$tasks = get_tasks_from_db_for_user($connect);
 
 foreach ($tasks as $key => $task) {
     if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
