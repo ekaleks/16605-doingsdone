@@ -47,9 +47,11 @@ $show_complete_tasks = rand(0, 1);
 require_once('functions.php');
 require_once('connect.php');
 
-$projects = get_projects_from_db_for_user($connect);
+$user = ['3'];
 
-$tasks = get_tasks_from_db_for_user($connect);
+$projects = get_projects_from_db_for_user($connect, $user);
+
+$tasks = get_tasks_from_db_for_user($connect, $user);
 
 foreach ($tasks as $key => $task) {
     if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
