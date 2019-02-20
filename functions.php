@@ -45,7 +45,7 @@ function get_projects_from_db_for_user($connect, $data){
 };
 
 function get_tasks_from_db_for_user($connect, $data){
-    $sql_query = 'SELECT t.title AS name, deadline AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ?';
+    $sql_query = 'SELECT t.title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ?';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

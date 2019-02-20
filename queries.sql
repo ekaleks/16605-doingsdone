@@ -11,15 +11,14 @@ INSERT INTO projects (title, user_id) VALUES
 ('Спорт', 3);
 
 INSERT INTO tasks (date_creation, date_completion, title, user_file, deadline, project_id, status) VALUES
-( NULL, NULL, 'Собеседование в IT компании', NULL, '01.12.2019', 3, 0 ),
-( NULL, NULL, 'Выполнить тестовое задание', NULL, '25.12.2019', 3, 0 ),
-( NULL, NULL, 'Сделать задание первого раздела', NULL, '21.12.2019', 2, 1 ),
-( NULL, NULL, 'Встреча с другом', NULL, '01.12.2019', 1, 0),
-( NULL, NULL, 'Купить корм для кота', NULL, '12.02.2019', 4, 0),
+( NULL, NULL, 'Выполнить тестовое задание', NULL, '2019.12.25', 3, 0 ),
+( NULL, NULL, 'Сделать задание первого раздела', NULL, '2019.12.21', 2, 1 ),
+( NULL, NULL, 'Встреча с другом', NULL, '2019.12.01', 1, 0),
+( NULL, NULL, 'Купить корм для кота', NULL, '2019.02.12', 4, 0),
 ( NULL, NULL, 'Заказать пиццу', NULL, NULL, 4, 0),
-( NULL, NULL, 'Положить деньги на счет', NULL, '01.03.2019', 6, 0),
-( NULL, NULL, 'Заплатить по кредиту', NULL, '12.02.2019', 6, 1),
-( NULL, NULL, 'Тренировка', NULL, '15.02.2019', 7, 0);
+( NULL, NULL, 'Положить деньги на счет', NULL, '2019.03.01', 6, 0),
+( NULL, NULL, 'Заплатить по кредиту', NULL, '2019.02.12', 6, 1),
+( NULL, NULL, 'Тренировка', NULL, '2019.02.15', 7, 0);
 
 /*получить список из всех проектов для одного пользователя;*/
 SELECT title FROM projects WHERE user_id = 1;
