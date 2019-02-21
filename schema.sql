@@ -16,7 +16,7 @@ CREATE TABLE tasks (
     date_completion TIMESTAMP,
     title CHAR(128) NOT NULL,
     user_file CHAR(128),
-    deadline TIMESTAMP,
+    deadline DATETIME,
     project_id INT NOT NULL,
     status TINYINT DEFAULT 0
 );

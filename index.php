@@ -1,7 +1,6 @@
 <?php
-// показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
-$projects = ['Входящие', 'Учёба', 'Работа', 'Домашние дела', 'Авто'];
+
+/*$projects = ['Входящие', 'Учёба', 'Работа', 'Домашние дела', 'Авто'];
 $tasks = [
     [
         'name' => 'Собеседование в IT компании',
@@ -40,18 +39,27 @@ $tasks = [
         'is_done' => false
     ]
 ];
+*/
+
+// показывать или нет выполненные задачи
+$show_complete_tasks = rand(0, 1);
+
+require_once('functions.php');
+require_once('connect.php');
+
+$user = ['3'];
+
+$projects = get_projects_from_db_for_user($connect, $user);
+
+$tasks = get_tasks_from_db_for_user($connect, $user);
 
 foreach ($tasks as $key => $task) {
-    if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false) {
+    if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
         $tasks[$key]['is_important'] = true;}
     else {
         $tasks[$key]['is_important'] = false;
     }
 };
-
-
-
-require_once('functions.php');
 
 $content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
 
