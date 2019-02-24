@@ -47,12 +47,9 @@ $show_complete_tasks = rand(0, 1);
 require_once('functions.php');
 require_once('connect.php');
 
-$user = ['3'];
-
-if ($user !== Null) {
-
+$user = 2;
+if (isset($user)) {
 $projects = get_projects_for_user($connect, $user);
-
 $tasks = get_tasks_for_user($connect, $user);
 }
 else {
@@ -60,15 +57,14 @@ else {
     $tasks = [];
 }
 
-if(isset($_GET['id'])) {
-    $project_id = $_GET['id'];
+$project_id = null;
+
+if (isset($_GET['id'])) {
+    $project_id = (int)$_GET['id'];
+    $tasks = get_tasks_for_user_and_project($connect, $user, $project_id);
 }
 else{
-    $project_id = '';
-}
-
-if ($project_id !== '') {
-    $tasks = get_tasks_for_project($connect, $project_id);
+  $content = include_template('error.php', []);
 }
 
 foreach ($tasks as $key => $task) {
@@ -82,7 +78,7 @@ foreach ($tasks as $key => $task) {
 $content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
 
 $layout = include_template('layout.php',
-['project_id' => $project_id, 'content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
+['content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
 
 print($layout);
 ?>

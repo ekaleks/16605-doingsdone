@@ -43,8 +43,9 @@ function get_projects($connect){
     return $result;
 };
 
-function get_tasks_for_project($connect, $data){
-    $sql_query = 'SELECT t.title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE p.id = ?';
+function get_tasks_for_user_and_project($connect, $data1, $data2){
+    $data = [$data1, $data2];
+    $sql_query = 'SELECT t.title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ? AND project_id = ?';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -60,6 +61,7 @@ function get_tasks_for_project($connect, $data){
 };
 
 function get_projects_for_user($connect, $data){
+    $data = [$data];
     $sql_query = 'SELECT id,title FROM projects WHERE user_id = ?';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
@@ -76,6 +78,7 @@ function get_projects_for_user($connect, $data){
 };
 
 function get_tasks_for_user($connect, $data){
+    $data = [$data];
     $sql_query = 'SELECT t.title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ?';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
@@ -90,4 +93,25 @@ function get_tasks_for_user($connect, $data){
 
     return $result;
 };
+
+function get_tasks_for_project($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT t.title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE project_id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if($result === false) {
+        $error = mysqli_error($connect);
+        print('Ошибка MySQL:' . $error);
+    }
+    {
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+
+
+
 ?>
