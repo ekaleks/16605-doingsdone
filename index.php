@@ -47,6 +47,9 @@ $show_complete_tasks = rand(0, 1);
 require_once('functions.php');
 require_once('connect.php');
 
+$projects;
+$tasks;
+
 $user = 2;
 if (isset($user)) {
 $projects = get_projects_for_user($connect, $user);
@@ -58,13 +61,18 @@ else {
 }
 
 $project_id = null;
-
+$result_sql = null;
 if (isset($_GET['id'])) {
     $project_id = (int)$_GET['id'];
-    $tasks = get_tasks_for_user_and_project($connect, $user, $project_id);
+    $result_sql = get_tasks_for_user_and_project($connect, $user, $project_id);
+    $tasks = $result_sql;
+    if ($result_sql === []) {
+        $projects = [];
+        print('Ошибка 404: задач не найдено');
+    }
 }
-else{
-  $content = include_template('error.php', []);
+else {
+    $tasks = get_tasks_for_user($connect, $user);
 }
 
 foreach ($tasks as $key => $task) {
