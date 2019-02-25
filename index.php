@@ -50,7 +50,7 @@ require_once('connect.php');
 $projects;
 $tasks;
 
-$user = 2;
+$user = 3;
 if (isset($user)) {
 $projects = get_projects_for_user($connect, $user);
 $tasks = get_tasks_for_user($connect, $user);
@@ -86,7 +86,7 @@ foreach ($tasks as $key => $task) {
 $content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
 
 $layout = include_template('layout.php',
-['content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
+['connect' => $connect, 'content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
 
 print($layout);
 ?>

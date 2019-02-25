@@ -15,22 +15,22 @@
     return $result;
 };
 
-function countTasksInProject($tasks, $projectName) {
+function countTasksInProject($connect, $projectName) {
+    $tasks = get_tasks($connect);
     $count = 0;
     foreach ($tasks as $task) {
     if ( $task['category'] === $projectName) {
     $count++;
 }
     }
-
     return $count;
 };
 
 require('mysql_helper.php');
 
 
-function get_projects($connect){
-    $sql_query = 'SELECT * FROM projects';
+function get_tasks($connect){
+    $sql_query = 'SELECT p.title AS category FROM tasks t JOIN projects p ON t.project_id = p.id';
     $result = mysqli_query($connect, $sql_query);
     if($result === false) {
         $error = mysqli_error($connect);
@@ -110,8 +110,5 @@ function get_tasks_for_project($connect, $data){
 
     return $result;
 };
-
-
-
 
 ?>
