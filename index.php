@@ -47,11 +47,33 @@ $show_complete_tasks = rand(0, 1);
 require_once('functions.php');
 require_once('connect.php');
 
-$user = ['3'];
+$projects;
+$tasks;
 
-$projects = get_projects_from_db_for_user($connect, $user);
+$user = 3;
+if (isset($user)) {
+$projects = get_projects_for_user($connect, $user);
+$tasks = get_tasks_for_user($connect, $user);
+}
+else {
+    $projects = [];
+    $tasks = [];
+}
 
-$tasks = get_tasks_from_db_for_user($connect, $user);
+$project_id = null;
+$result_sql = null;
+if (isset($_GET['id'])) {
+    $project_id = (int)$_GET['id'];
+    $result_sql = get_tasks_for_user_and_project($connect, $user, $project_id);
+    $tasks = $result_sql;
+    if ($result_sql === []) {
+        $projects = [];
+        print('Ошибка 404: задач не найдено');
+    }
+}
+else {
+    $tasks = get_tasks_for_user($connect, $user);
+}
 
 foreach ($tasks as $key => $task) {
     if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
@@ -64,7 +86,7 @@ foreach ($tasks as $key => $task) {
 $content = include_template('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks]);
 
 $layout = include_template('layout.php',
-['content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
+['connect' => $connect, 'content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
 
 print($layout);
 ?>
