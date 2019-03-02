@@ -115,9 +115,9 @@ function get_tasks_for_project($connect, $data){
 
 //функция добавляющая новую задачу в БД для текущего проекта
 
-function put_task_in_database($connect, $data = []){
+function put_task_in_database($connect, $data){
     $sql_query = 'INSERT INTO tasks (title, user_file, deadline, project_id) VALUES (?, ?, ?, ?)';
-    $stmt = db_get_prepare_stmt($connect, $sql_query, $data = []);
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     $result = mysqli_stmt_execute($stmt);
     if($result){
         $result = mysqli_insert_id($connect);
