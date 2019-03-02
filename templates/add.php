@@ -4,22 +4,33 @@
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input <?php if ($error_field || $name_task_error):?> form_inpur--error <?php endif; ?> " type="text" name="name" id="name" value="" placeholder="Введите название">
+            <input class="form__input <?php if ($error_field === true|| $name_task_error === true):?> form__input--error<?php endif; ?> " type="text" name="name" id="name" value="" placeholder="Введите название">
+            <?php if ($error_field === true):?>
+            <p class="form__message"><?= $errors['field']; ?></p>
+            <?php endif; ?>
+            <?php if ($error_field === false && $name_task_error === true):?>
+            <p class="form__message"><?= $errors['name_error'];?></p>
+            <?php endif; ?>
           </div>
 
           <div class="form__row">
             <label class="form__label" for="project">Проект</label>
-            <select class="form__input form__input--select<?php if ($error_field || $name_project_error):?> form_inpur--error <?php endif; ?> " name="project" id="project">
+            <select class="form__input form__input--select<?php if ($name_project_error):?> form__input--error<?php endif; ?> " name="project" id="project">
             <?php foreach ($projects as $project): ?>
               <option value=""><?=htmlspecialchars($project['title']); ?></option>
               <?php endforeach; ?>
             </select>
+            <?php if ($name_project_error):?>
+            <p class="form__message"><?= $errors['name_project_error'];?></p>
+            <?php endif; ?>
           </div>
 
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-    <input class="form__input form__input--date<?php if ($error_field || $date_error):?> form_inpur--error <?php endif; ?>" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+    <input class="form__input form__input--date<?php if ($error_field || $date_error):?> form__input--error <?php endif; ?>" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+    <?php if ($error_field === true):?><p class="form__message"><?= $errors['field']; ?></p><?php endif; ?>
+    <?php if ($error_field === false && $date_error === true):?><p class="form__message"><?= $errors['date_error'];?></p><?php endif; ?>
           </div>
 
           <div class="form__row">
@@ -32,6 +43,7 @@
                 <span>Выберите файл</span>
               </label>
             </div>
+            <?php if ($error_file):?><p class="form__message"><?=$errors['file']?></p><?php endif; ?>
           </div>
 
           <div class="form__row form__row--controls">

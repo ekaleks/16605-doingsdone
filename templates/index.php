@@ -34,7 +34,7 @@
         </td>
 
         <td class="task__file">
-            <a class="download-link" href="<?=htmlspecialchars($task['user_file']);?>"></a>
+            <a class="download-link" href="<?=htmlspecialchars($task['user_file']);?>"><?=htmlspecialchars($task['user_file']);?></a>
         </td>
 
         <td class="task__date"><?=htmlspecialchars($task['date']);?></td>

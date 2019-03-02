@@ -50,11 +50,7 @@ require('mysql_helper.php');
 function get_category_tasks($connect){
     $sql_query = 'SELECT p.title AS category FROM tasks t JOIN projects p ON t.project_id = p.id';
     $result = mysqli_query($connect, $sql_query);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
@@ -68,11 +64,7 @@ function get_tasks_for_user_and_project($connect, $data1, $data2){
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
@@ -86,11 +78,7 @@ function get_projects_for_user($connect, $data){
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
@@ -104,11 +92,7 @@ function get_tasks_for_user($connect, $data){
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result) {
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
@@ -122,11 +106,7 @@ function get_tasks_for_project($connect, $data){
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result) {
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
@@ -137,13 +117,9 @@ function get_tasks_for_project($connect, $data){
 
 function put_task_in_database($connect, $data = []){
     $sql_query = 'INSERT INTO tasks (title, user_file, deadline, project_id) VALUES (?, ?, ?, ?)';
-    $stmt = db_get_prepare_stmt($connect, $sql_query, $data =[]);
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data = []);
     $result = mysqli_stmt_execute($stmt);
-    if($result === false) {
-        $error = mysqli_error($connect);
-        print('Ошибка MySQL:' . $error);
-    }
-    {
+    if($result){
         $result = mysqli_insert_id($connect);
     }
 
