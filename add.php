@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    	if (isset($_FILES['preview'])) {
+    	if (isset($_FILES['preview']) && $_FILES['preview']['error'] === 0) {
             var_dump($_FILES);
             $file_name = $_FILES['preview']['name'];
             $file_path = __DIR__ . '/uploads/';
@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
             $tasks['user_file'] = $file_path;
+
         }
         else {
             $errors['file'] = 'Вы не загрузили файл';
