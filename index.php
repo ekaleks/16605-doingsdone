@@ -1,46 +1,4 @@
 <?php
-
-/*$projects = ['Входящие', 'Учёба', 'Работа', 'Домашние дела', 'Авто'];
-$tasks = [
-    [
-        'name' => 'Собеседование в IT компании',
-        'date' => '01.12.2019',
-        'category' => 'Работа',
-        'is_done' => false
-    ],
-    [
-        'name' => 'Выполнить тестовое задание',
-        'date' => '25.12.2019',
-        'category' => 'Работа',
-        'is_done' => false
-    ],
-    [
-        'name' => 'Сделать задание первого раздела',
-        'date' => '21.12.2019',
-        'category' => 'Учёба',
-        'is_done' => true
-    ],
-    [
-        'name' => 'Встреча с другом',
-        'date' => '01.12.2019',
-        'category' => 'Входящие',
-        'is_done' => false
-    ],
-    [
-        'name' => 'Купить корм для кота',
-        'date' => '12.02.2019',
-        'category' => 'Домашние дела',
-        'is_done' => false
-    ],
-    [
-        'name' => 'Заказать пиццу',
-        'date' => Null,
-        'category' => 'Домашние дела',
-        'is_done' => false
-    ]
-];
-*/
-
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
@@ -62,17 +20,23 @@ else {
 
 $project_id = null;
 $result_sql = null;
+
+try{
 if (isset($_GET['id'])) {
     $project_id = (int)$_GET['id'];
     $result_sql = get_tasks_for_user_and_project($connect, $user, $project_id);
     $tasks = $result_sql;
     if ($result_sql === []) {
-        $projects = [];
-        print('Ошибка 404: задач не найдено');
+        throw new Exception('Ошибка 404: задач не найдено.');
     }
 }
 else {
     $tasks = get_tasks_for_user($connect, $user);
+}
+}
+catch(Exception $e){
+    echo $e->getMessage();
+    exit();
 }
 
 foreach ($tasks as $key => $task) {
