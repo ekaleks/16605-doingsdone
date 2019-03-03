@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['date_error'] = 'Неправильный формат даты';
             $date_error = true;
         }
-        else {
+        else{
             $tasks['date'] = date( 'Y-m-d h:i:s', strtotime($_POST['date']));
         }
 
@@ -64,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['name_error'] = 'Неправильно указано название задачи';
             $name_task_error = true;
         }
-
 
         if (!count($errors)) {
             put_task_in_database($connect, $tasks);
