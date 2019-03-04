@@ -13,7 +13,7 @@ CREATE TABLE projects (
 CREATE TABLE tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_completion TIMESTAMP,
+    date_completion TIMESTAMP DEFAULT NULL,
     title CHAR(128) NOT NULL,
     user_file CHAR(128),
     deadline DATETIME,
