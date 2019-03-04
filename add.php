@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!count($errors)) {
             put_task_in_database($connect, $tasks);
 
-            header('Location: http://16605-doingsdone/index.php');
+            header('Location: /index.php');
+            die();
         }
 }
 
