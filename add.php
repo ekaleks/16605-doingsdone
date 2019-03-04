@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date_error = true;
         }
         else{
-            $tasks['date'] = date( 'Y-m-d h:i:s', strtotime($_POST['date']));
+            $tasks['date'] = date('Y-m-d', strtotime($_POST['date']));
         }
 
 

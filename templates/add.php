@@ -30,7 +30,7 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-    <input class="form__input form__input--date<?php if ($error_field || $date_error):?> form__input--error <?php endif; ?>" type="date" name="date" id="date" value="<?= isset($tasks['date']) ? $tasks['date']: ' '; ?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+    <input class="form__input form__input--date<?php if ($error_field || $date_error):?> form__input--error <?php endif; ?>" type="date" name="date" id="" value="<?= isset($tasks['date']) ? $tasks['date']: ' '; ?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
     <?php if ($error_field):?><p class="form__message"><?= $errors['field']; ?></p><?php endif; ?>
     <?php if (!$error_field && $date_error):?><p class="form__message"><?= $errors['date_error'];?></p><?php endif; ?>
           </div>
