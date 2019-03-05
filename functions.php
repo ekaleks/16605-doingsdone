@@ -125,4 +125,29 @@ function put_task_in_database($connect, $data){
 
     return $result;
 };
+
+//Функция получающая из БД список юзеров
+function get_email_for_users($connect){
+    $sql_query = 'SELECT e_mail AS email FROM users';
+    $result = mysqli_query($connect, $sql_query);
+    if($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+//функция добавляющая нового юзера в БД
+function put_user_in_database ($connect, $data) {
+    $sql_query = 'INSERT INTO users (e_mail, password, name) VALUES (?, ?, ?)';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if($result){
+        $result = mysqli_insert_id($connect);
+    }
+
+    return $result;
+};
+
+
 ?>
