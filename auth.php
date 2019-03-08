@@ -9,7 +9,7 @@ $projects = [];
 $required_fields = [];
 $errors = [];
 $error_email = false;
-$users = [];
+$form = [];
 $error_user = false;
 $error_password = false;
 $user;
@@ -17,8 +17,9 @@ $password;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $required_fields = ['email', 'password'];
-    $users = $_POST;
+    $form = $_POST;
 
     foreach ($required_fields as $field) {
 		if (empty($_POST[$field])) {
@@ -32,39 +33,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_email = true;
     }
 
-    if (!count($errors)) {
+    $user = get_user($connect, $form['email']);
 
-        $user = get_email_for_user($connect, $users['email']);
+    if (!count($errors) && $user !== []) {
 
-        if ($user) {
-                $user = get_user($connect, $users['email']);
-                foreach ($user as $key) {
-                if (password_verify($users['password'], $key['password'])) {
+        if (password_verify($form['password'], $user['0']['password'])) {
+
                      $_SESSION['user'] = $user;
                 }
-                {
-                    $errors['password'] = 'Неверный пароль';
+
+                else {
+                    $errors['error_password'] = 'Неверный пароль';
+
                 }
 
-            }
 
         }
         else {
-            $errors['errors_user'] = 'Такой пользователь не найден';
+            $errors['error_user'] = 'Такой пользователь не найден';
             }
-    }
+
 
     if (count($errors)) {
-		$page_content = include_template('auth.php', ['users' => $users, 'errors' => $errors]);
+		$content = include_template('auth.php', ['form' => $form, 'errors' => $errors, 'user' => $user, 'error_email' => $error_email ]);
     }
 
+else {
+    header("Location: index.php");
+		die();
+}
 
 }
 
-
-
-
-$content = include_template('auth.php', ['errors' => $errors, 'users' => $users, 'error_email' => $error_email ]);
+$content = include_template('auth.php', ['form' => $form, 'errors' => $errors, 'error_email' => $error_email ]);
 
 $layout = include_template('layout.php',
 ['connect' => $connect, 'content' => $content, 'title' => 'Дела в порядке']);

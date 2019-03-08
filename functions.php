@@ -144,7 +144,7 @@ function get_email_for_user($connect, $data){
 
 function get_user($connect, $data){
     $data = [$data];
-    $sql_query = 'SELECT e_mail AS email, password, name FROM users WHERE e_mail = ?';
+    $sql_query = 'SELECT id, e_mail AS email, password, name FROM users WHERE e_mail = ?';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

@@ -2,7 +2,10 @@
 
 require_once('functions.php');
 require_once('connect.php');
-$user;
+
+session_start();
+
+$user = $_SESSION['user']['0']['id'];
 
 if (isset($user)) {
 // показывать или нет выполненные задачи
@@ -48,7 +51,7 @@ else {
             $tasks[$key]['is_important'] = false;
         }
     };
-    $content = include_template('index.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+    $content = include_template('index.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks, 'user' => $user]);
 
 }
 }
