@@ -1,8 +1,9 @@
 <?php
-session_start();
 
 require_once('functions.php');
 require_once('connect.php');
+
+session_start();
 
 $projects = [];
 $required_fields = [];
@@ -35,28 +36,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $user = get_email_for_user($connect, $users['email']);
 
-        if (isset($user)) {
+        if ($user) {
                 $user = get_user($connect, $users['email']);
                 foreach ($user as $key) {
                 if (password_verify($users['password'], $key['password'])) {
-
-                    header('Location: /index.php');
-                    die();
+                     $_SESSION['user'] = $user;
                 }
-                else {
-                    $error_password = true;
-                    var_dump($error_password);
+                {
+                    $errors['password'] = 'Неверный пароль';
                 }
 
             }
 
         }
         else {
-            $error_user = true;
-            var_dump($error_user);
+            $errors['errors_user'] = 'Такой пользователь не найден';
             }
     }
+
+    if (count($errors)) {
+		$page_content = include_template('auth.php', ['users' => $users, 'errors' => $errors]);
+    }
+
+
 }
+
+
 
 
 $content = include_template('auth.php', ['errors' => $errors, 'users' => $users, 'error_email' => $error_email ]);
