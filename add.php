@@ -5,7 +5,6 @@ require_once('connect.php');
 
 $user = 3;
 $projects = get_projects_for_user($connect, $user);
-$error_field = false;
 $error_file = false;
 $date_error = false;
 $name_project_error = false;
@@ -73,13 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-$content = include_template('add.php', ['tasks' => $tasks, 'projects' => $projects,
-'errors' => $errors, 'error_field' => $error_field, 'error_file' => $error_file,
+$content = include_template('add.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects,
+'errors' => $errors, 'error_file' => $error_file,
 'date_error' => $date_error, 'name_project_error' => $name_project_error,
 'name_task_error' => $name_task_error]);
 
-$layout = include_template('layout.php',
-['connect' => $connect, 'content' => $content, 'projects' => $projects, 'title' => 'Дела в порядке']);
+$layout = include_template('layout.php', [ 'connect' => $connect, 'projects' => $projects, 'tasks' => $tasks, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
 
 print($layout);
 ?>

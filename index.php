@@ -2,7 +2,9 @@
 
 require_once('functions.php');
 require_once('connect.php');
+$user;
 
+if (isset($user)) {
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
@@ -10,8 +12,6 @@ $projects;
 $tasks;
 $project_id = null;
 $result_sql = null;
-
-$user = 3;
 
 $projects = get_projects_for_user($connect, $user);
 
@@ -32,7 +32,9 @@ if (isset($_GET['id'])) {
                 $tasks[$key]['is_important'] = false;
             }
         };
-        $content = include_template('index.php', ['tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+
+        $content = include_template('index.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+
     }
 }
 
@@ -46,14 +48,19 @@ else {
             $tasks[$key]['is_important'] = false;
         }
     };
+    $content = include_template('index.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
 
-    $content = include_template('index.php', ['tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+}
+}
+
+else {
+    $content = include_template('guest.php', []);
 }
 
 
 
 $layout = include_template('layout.php',
-['connect' => $connect, 'content' => $content, 'projects' => $projects, 'tasks' => $tasks, 'title' => 'Дела в порядке']);
+['connect' => $connect, 'content' => $content, 'title' => 'Дела в порядке']);
 
 print($layout);
 ?>
