@@ -3,7 +3,7 @@
 require_once('functions.php');
 require_once('connect.php');
 
-
+$user = [];
 
 if (isset($_SESSION['user']['0']['id'])) {
     $user = $_SESSION['user']['0']['id'];

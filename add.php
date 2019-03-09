@@ -1,7 +1,10 @@
 <?php
 
+$user = [];
+
 require_once('functions.php');
 require_once('connect.php');
+
 
 if (isset($_SESSION['user']['0']['id'])) {
 
