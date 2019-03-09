@@ -1,4 +1,10 @@
 <?php
+// подключение сессии
+session_start();
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 //Функция шаблонизатор
 function include_template($name, $data) {
     $name = 'templates/' . $name;
@@ -127,15 +133,34 @@ function put_task_in_database($connect, $data){
 };
 
 //Функция получающая из БД список юзеров
-function get_email_for_users($connect){
-    $sql_query = 'SELECT e_mail AS email FROM users';
-    $result = mysqli_query($connect, $sql_query);
+
+
+function get_email_for_user($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT e_mail AS email FROM users WHERE e_mail = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if($result) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
     return $result;
 };
+
+function get_user($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT id, e_mail AS email, password, name FROM users WHERE e_mail = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
 
 //функция добавляющая нового юзера в БД
 function put_user_in_database ($connect, $data) {
