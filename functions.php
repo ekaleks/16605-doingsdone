@@ -1,4 +1,7 @@
 <?php
+// подключение сессии
+session_start();
+
 //Функция шаблонизатор
 function include_template($name, $data) {
     $name = 'templates/' . $name;

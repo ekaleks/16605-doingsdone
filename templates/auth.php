@@ -1,22 +1,4 @@
-<header class="main-header">
-      <a href="index.php">
-        <img src="../img/logo.png" width="153" height="42" alt="Логитип Дела в порядке">
-      </a>
 
-      <div class="main-header__side">
-        <a class="main-header__side-item button button--transparent" href="auth.php">Войти</a>
-      </div>
-    </header>
-
-    <div class="content">
-
-      <section class="content__side">
-        <p class="content__side-info">Если у вас уже есть аккаунт, авторизуйтесь на сайте</p>
-
-        <a class="button button--transparent content__side-button" href="auth.php">Войти</a>
-      </section>
-
-      <main class="content__main">
         <h2 class="content__main-heading">Вход на сайт</h2>
 
         <form class="form" action="" method="post">
@@ -53,7 +35,3 @@
             <input class="button" type="submit" name="" value="Войти">
           </div>
         </form>
-
-      </main>
-
-    </div>

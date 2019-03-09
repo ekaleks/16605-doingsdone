@@ -3,7 +3,6 @@
 require_once('functions.php');
 require_once('connect.php');
 
-session_start();
 
 $projects = [];
 $required_fields = [];
