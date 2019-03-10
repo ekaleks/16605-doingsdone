@@ -78,13 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 }
 }
+else {
+    header('Location: /guest.php');
+            die();
+}
 
-$content = include_template('add.php', ['user' => $user, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects,
+$content = include_template('add.php', ['user' => $user, 'connect' => $connect,'tasks' => $tasks, 'projects' => $projects,
 'errors' => $errors, 'error_file' => $error_file,
 'date_error' => $date_error, 'name_project_error' => $name_project_error,
 'name_task_error' => $name_task_error]);
 
-$layout = include_template('layout.php', [ 'connect' => $connect, 'projects' => $projects, 'tasks' => $tasks, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
+$layout = include_template('layout.php', [ 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
 
 print($layout);
 ?>

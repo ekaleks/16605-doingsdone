@@ -47,6 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 }
 }
+else {
+    header('Location: /guest.php');
+            die();
+}
+
 
 $content = include_template('addProject.php', ['user' => $user, 'connect' => $connect, 'projects' => $projects,
 'errors' => $errors]);

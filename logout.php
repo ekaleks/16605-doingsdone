@@ -5,7 +5,7 @@ require_once('connect.php');
 
 $_SESSION = [];
 
-header('Location: /index.php');
+header('Location: /guest.php');
 die();
 
 
