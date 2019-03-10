@@ -77,6 +77,50 @@ function get_tasks_for_user_and_project($connect, $data1, $data2){
     return $result;
 };
 
+//Функция получающая из БД список задач на текущую дату
+function get_tasks_for_user_now($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT t.id AS task_id, t.title AS name, user_file, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE deadline <= NOW() AND user_id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+//Функция получающая из БД список задач на завтра
+function get_tasks_for_user_tomorrow($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT t.id AS task_id, t.title AS name, user_file, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE deadline < DATE_ADD(NOW(), INTERVAL 1 DAY) AND user_id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+//Функция получающая из БД список просроченых задач
+function get_tasks_for_user_yesterday($connect, $data){
+    $data = [$data];
+    $sql_query = 'SELECT t.id AS task_id, t.title AS name, user_file, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE deadline < NOW() AND user_id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+
+
 //Функция получающая из БД список проектов для текущего юзера
 function get_projects_for_user($connect, $data){
     $data = [$data];

@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $field_date = $_POST['date'];
         $current_date = time();
 
-        if (check_date_format($field_date) === false && strtotime($field_date) < $current_date ) {
+
+        if (check_date_format($field_date) === false && strtotime($field_date) < ($current_date - 86400)) {
             $errors['date_error'] = 'Неправильный формат даты';
             $date_error = true;
         }
