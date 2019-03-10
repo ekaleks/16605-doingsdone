@@ -8,14 +8,39 @@ $user = [];
 if (isset($_SESSION['user']['0']['id'])) {
     $user = $_SESSION['user']['0']['id'];
 // показывать или нет выполненные задачи
+
 $show_complete_tasks = rand(0, 1);
 
 $projects;
 $tasks;
 $project_id = null;
 $result_sql = null;
+$check = 0;
 
 $projects = get_projects_for_user($connect, $user);
+
+if (isset($_GET['task_id']) && isset($_GET['check'])) {
+
+    $task_id = $_GET['task_id'];
+    $check = $_GET['check'];
+    $task = get_status_task($connect, $task_id);
+    $status = $task['0']['is_done'];
+
+    if ($check === '1' && $status === 0) {
+       update_tasks_status_check($connect, $task_id);
+       header('Location: /index.php');
+    die();
+
+    }
+
+     if ($check === '1' && $status === 1) {
+        update_tasks_status_not_check($connect, $task_id);
+        header('Location: /index.php');
+        die();
+
+    }
+}
+
 
 if (isset($_GET['id'])) {
     $project_id = (int)$_GET['id'];
@@ -36,7 +61,7 @@ if (isset($_GET['id'])) {
         };
 
 
-        $content = include_template('index.php', ['user' => $user, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+        $content = include_template('index.php', ['check' => $check, 'user' => $user, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
 
     }
 }
@@ -51,18 +76,15 @@ else {
             $tasks[$key]['is_important'] = false;
         }
     };
-    $content = include_template('index.php', ['connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks, 'user' => $user]);
-
+    $content = include_template('index.php', ['check' => $check, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks, 'user' => $user]);
 }
+
 }
 else {
     header('Location: /guest.php');
     die();
 
 }
-
-
-
 
 
 $layout = include_template('layout.php',
