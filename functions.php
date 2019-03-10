@@ -39,8 +39,8 @@ function check_date_format($date) {
 
 
 //Функция подсчитывающая количество задач в проекте
-function countTasksInProject($connect, $projectName) {
-    $tasks = get_category_tasks($connect);
+function countTasksInProject($connect, $projectName, $data) {
+    $tasks = get_category_tasks_for_user($connect, $data);
     $count = 0;
     foreach ($tasks as $task) {
     if ( $task['category'] === $projectName) {
@@ -53,9 +53,11 @@ function countTasksInProject($connect, $projectName) {
 require('mysql_helper.php');
 
 //Функция получающая из БД список категорий задач для сравнения их с названиями проектов
-function get_category_tasks($connect){
-    $sql_query = 'SELECT p.title AS category FROM tasks t JOIN projects p ON t.project_id = p.id';
-    $result = mysqli_query($connect, $sql_query);
+function get_category_tasks_for_user($connect, $data){
+    $sql_query = 'SELECT p.title AS category FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if($result) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
