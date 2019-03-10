@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $field_date = $_POST['date'];
         $current_date = time();
 
-        if (check_date_format($field_date) === false && strtotime($field_date) < $current_date ) {
+
+        if (check_date_format($field_date) === false && strtotime($field_date) < ($current_date - 86400)) {
             $errors['date_error'] = 'Неправильный формат даты';
             $date_error = true;
         }
@@ -77,13 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 }
 }
+else {
+    header('Location: /guest.php');
+            die();
+}
 
-$content = include_template('add.php', ['user' => $user, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects,
+$content = include_template('add.php', ['user' => $user, 'connect' => $connect,'tasks' => $tasks, 'projects' => $projects,
 'errors' => $errors, 'error_file' => $error_file,
 'date_error' => $date_error, 'name_project_error' => $name_project_error,
 'name_task_error' => $name_task_error]);
 
-$layout = include_template('layout.php', [ 'connect' => $connect, 'projects' => $projects, 'tasks' => $tasks, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
+$layout = include_template('layout.php', [ 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
 
 print($layout);
 ?>
