@@ -5,8 +5,8 @@
           <div class="form__row">
             <label class="form__label" for="email">E-mail <sup>*</sup></label>
 
-       <input class="form__input <?php if (($error['email']) || $error_email):?> form__input--error <?php endif; ?>"
-        type="text" name="email" id="email" value="<?= isset($form['email']) ? $form['email'] : ' ';?>" placeholder="Введите e-mail">
+       <input class="form__input <?php if (($error['email'] ?? false) || $error_email ?? false):?> form__input--error <?php endif; ?>"
+        type="text" name="email" id="email" value="<?= isset($form['email']) ? $form['email'] : '';?>" placeholder="Введите e-mail">
         <?php if (isset($errors['email'])):?>
             <p class="form__message"><?= $errors['email']; ?></p>
         <? endif;?>
@@ -18,8 +18,8 @@
           <div class="form__row">
             <label class="form__label" for="password">Пароль <sup>*</sup></label>
 
-        <input class="form__input <?php if ($errors['password']):?> form__input--error<?php endif; ?>"
-        type="password" name="password" id="password" value="<?= isset($form['password']) ? $form['password'] : ' ';?>" placeholder="Введите пароль">
+        <input class="form__input <?php if ($errors['password'] ?? false):?>  form__input--error<?php endif; ?>"
+        type="password" name="password" id="password" value="" placeholder="Введите пароль">
         <?php if (isset($errors['password'])):?>
             <p class="form__message"><?= $errors['password']; ?></p>
         <? endif;?>

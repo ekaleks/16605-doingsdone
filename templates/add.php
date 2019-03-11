@@ -7,7 +7,7 @@
 
             <input class="form__input <?php if (($errors['name']) || $name_task_error):?>
              form__input--error
-             <?php endif; ?> " type="text" name="name" id="name" value="<?= isset($tasks['name']) ? $tasks['name'] : ' ';?>" placeholder="Введите название">
+             <?php endif; ?> " type="text" name="name" id="name" value="<?= isset($tasks['name']) ? $tasks['name'] : '';?>" placeholder="Введите название">
             <?php if (isset($errors['name'])):?>
             <p class="form__message"><?= $errors['name']; ?></p>
             <?php endif; ?>
@@ -31,7 +31,7 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-    <input class="form__input form__input--date<?php if ($errors['date'] || $date_error):?> form__input--error <?php endif; ?>" type="date" name="date" id="" value="<?= isset($tasks['date']) ? $tasks['date']: ' '; ?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+    <input class="form__input form__input--date<?php if ($errors['date'] || $date_error):?> form__input--error <?php endif; ?>" type="date" name="date" id="" value="<?= isset($tasks['date']) ? $tasks['date']: ''; ?>" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
     <?php if (isset($errors['date'])):?><p class="form__message"><?= $errors['date']; ?></p><?php endif; ?>
     <?php if ($date_error):?><p class="form__message"><?= $errors['date_error'];?></p><?php endif; ?>
           </div>
