@@ -11,7 +11,6 @@ if (isset($_SESSION['user']['0']['id'])) {
     $user = $_SESSION['user']['0']['id'];
 
 $projects = get_projects_for_user($connect, $user);
-$error_file = false;
 $date_error = false;
 $name_project_error = false;
 $name_task_error = false;
@@ -28,19 +27,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    	if (isset($_FILES['preview']) && $_FILES['preview']['error'] === 0) {
-            $file_name = $_FILES['preview']['name'];
-            $file_path = __DIR__ . '/uploads/';
-            $file_url = '/uploads/'.$file_name;
+    if (isset($_FILES['preview']) && $_FILES['preview']['error'] === 0) {
+        $file_name = $_FILES['preview']['name'];
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/'.$file_name;
 
-            move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
-            $tasks['user_file'] = $file_url;
-        }
+        move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
+        $tasks['user_file'] = $file_url;
+    }
+    else {
+        $tasks['user_file'] = '';
+    }
 
-        else {
-            $errors['file'] = 'Вы не загрузили файл';
-            $error_file = true;
-        }
+
 
         $field_date = $_POST['date'];
         $current_date = time();
@@ -50,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['date_error'] = 'Неправильный формат даты';
             $date_error = true;
         }
+
         else{
             $tasks['date'] = date('Y-m-d', strtotime($_POST['date']));
         }
@@ -65,10 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-        if ($tasks['name'] === ' ') {
+        if (trim($tasks['name']) === '') {
             $errors['name_error'] = 'Неправильно указано название задачи';
             $name_task_error = true;
         }
+
 
         if (!count($errors)) {
             put_task_in_database($connect, $tasks);
@@ -84,8 +85,7 @@ else {
 }
 
 $content = include_template('add.php', ['user' => $user, 'connect' => $connect,'tasks' => $tasks, 'projects' => $projects,
-'errors' => $errors, 'error_file' => $error_file,
-'date_error' => $date_error, 'name_project_error' => $name_project_error,
+'errors' => $errors, 'date_error' => $date_error, 'name_project_error' => $name_project_error,
 'name_task_error' => $name_task_error]);
 
 $layout = include_template('layout.php', [ 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);

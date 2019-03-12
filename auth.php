@@ -34,6 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $user = get_user($connect, $form['email']);
 
+    if (isset($user['0']['name'])) {
+
+        $user['0']['name'] = htmlspecialchars($user['0']['name']);
+    }
+
     if (!count($errors) && $user !== []) {
 
         if (password_verify($form['password'], $user['0']['password'])) {

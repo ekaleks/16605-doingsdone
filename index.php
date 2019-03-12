@@ -15,11 +15,10 @@ if (isset($_GET['show_completed'])) {
    $show_complete_tasks = $_GET['show_completed'];
 }
 
-$projects;
-$tasks;
 $project_id = null;
 $result_sql = null;
 $check = 0;
+
 
 $projects = get_projects_for_user($connect, $user);
 
@@ -83,8 +82,17 @@ else {
     if (isset($_GET['filter'])){
 
         if($_GET['filter'] === 'all') {
-            header('Location: /index.php');
-            die();
+            $result_sql = get_tasks_for_user($connect, $user);
+
+            $tasks = $result_sql;
+
+            foreach ($tasks as $key => $task) {
+                if ((floor((strtotime($task['date']) - time())/3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
+                    $tasks[$key]['is_important'] = true;}
+                else {
+                    $tasks[$key]['is_important'] = false;
+                }
+            };
         }
 
         if ($_GET['filter'] === 'now') {
@@ -103,6 +111,7 @@ else {
 
 
         if ($_GET['filter'] === 'tomorrow') {
+
             $result_sql = get_tasks_for_user_tomorrow($connect, $user);
 
             $tasks = $result_sql;
@@ -117,6 +126,7 @@ else {
         }
 
         if ($_GET['filter'] === 'yesterday') {
+
             $result_sql = get_tasks_for_user_yesterday($connect, $user);
 
             $tasks = $result_sql;
@@ -129,12 +139,6 @@ else {
                 }
             };
         }
-
-
-
-
-
-
 
     }
     $content = include_template('index.php', ['check' => $check, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks, 'user' => $user]);
@@ -150,7 +154,8 @@ else {
 
 
 $layout = include_template('layout.php',
-['projects' => $projects, 'tasks' => $tasks, 'connect' => $connect, 'content' => $content, 'title' => 'Дела в порядке']);
+['projects' => $projects, 'tasks' => $tasks, 'connect' => $connect,
+ 'content' => $content, 'title' => 'Дела в порядке']);
 
 print($layout);
 ?>
