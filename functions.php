@@ -5,6 +5,8 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+require('mysql_helper.php');
+
 //Функция шаблонизатор
 function include_template($name, $data) {
     $name = 'templates/' . $name;
@@ -50,7 +52,7 @@ function countTasksInProject($connect, $projectName, $data) {
     return $count;
 };
 
-require('mysql_helper.php');
+
 
 //Функция получающая из БД список категорий задач для сравнения их с названиями проектов
 function get_category_tasks_for_user($connect, $data){

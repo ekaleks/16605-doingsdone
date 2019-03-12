@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if ($_POST['name'] === ' ') {
+    if (trim($_POST['name']) === '') {
         $errors['name_error'] = 'Неправильно указано название проекта';
     }
 

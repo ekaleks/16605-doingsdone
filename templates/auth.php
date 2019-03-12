@@ -6,11 +6,11 @@
             <label class="form__label" for="email">E-mail <sup>*</sup></label>
 
        <input class="form__input <?php if (($error['email'] ?? false) || $error_email ?? false):?> form__input--error <?php endif; ?>"
-        type="text" name="email" id="email" value="<?= isset($form['email']) ? $form['email'] : '';?>" placeholder="Введите e-mail">
+        type="text" name="email" id="email" value="<?= isset($form['email']) ? htmlspecialchars($form['email']) : '';?>" placeholder="Введите e-mail">
         <?php if (isset($errors['email'])):?>
             <p class="form__message"><?= $errors['email']; ?></p>
         <? endif;?>
-        <?php if ($error_email):?>
+        <?php if ($error_email ?? false ):?>
         <p class="form__message"><?= $errors['email_validate']; ?></p>
         <?php endif; ?>
           </div>
