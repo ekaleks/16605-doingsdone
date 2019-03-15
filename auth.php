@@ -27,19 +27,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }
 
-    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (isset($form['email']) && !filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email_validate'] = 'Email введен неккоректно';
-        $error_email = true;
     }
 
+    if(isset($form['email'])) {
+
     $user = get_user($connect, $form['email']);
+    }
 
     if (isset($user['0']['name'])) {
 
         $user['0']['name'] = htmlspecialchars($user['0']['name']);
     }
 
-    if (!count($errors) && $user !== []) {
+    if (isset($form['email']) && isset($form['password']) && !count($errors) && $user !== []) {
 
         if (password_verify($form['password'], $user['0']['password'])) {
 

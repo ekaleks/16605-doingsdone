@@ -8,11 +8,10 @@ $errors = [];
 $users = [];
 $user_email = [];
 $error_field = false;
-$error_email = false;
-$error_unique = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required_fields = ['email', 'password', 'name'];
+
     $users = $_POST;
 
     foreach ($required_fields as $field) {
@@ -23,18 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }
 
-    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (isset($_POST['email']) && !empty($_POST['email']) && !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email_validate'] = 'Неправильный формат email';
-        $error_email = true;
     }
 
     else {
+        if (isset($_POST['email'])) {
+
         $user_email = get_email_for_user($connect, $_POST['email']);
             if ($user_email) {
             $errors['unique'] = 'Этот email уже есть';
-            $error_unique = true;
             }
-
+        }
     }
 
     if (!count($errors)) {
@@ -50,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 $content = include_template('register.php', ['projects' => $projects, 'connect' => $connect, 'users' => $users, 'errors' => $errors,
-'error_field' => $error_field, 'error_email' => $error_email, 'error_unique' => $error_unique]);
+'error_field' => $error_field]);
 
 $layout = include_template('layout.php', ['content' => $content, 'title' => 'Дела в порядке']);
 

@@ -15,7 +15,13 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required_fields = ['name'];
+
+    if(isset($_POST['name'])) {
+
     $form['name'] = $_POST['name'];
+
+    }
+
     $form['user_id'] = strval($user);
 
 
@@ -25,13 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (trim($_POST['name']) === '') {
+    if (!isset($errors['name']) && isset($_POST['name']) && trim($_POST['name']) === '') {
         $errors['name_error'] = 'Неправильно указано название проекта';
     }
+    if(isset($_POST['name'])) {
 
     $project = get_projects_with_title_for_user($connect, $_POST['name'], $user);
 
-    if ($project) {
+    }
+
+    if (!isset($errors['name']) && !isset($errors['name_error']) && $project) {
         $errors['unique'] = 'Этот проект уже есть';
         }
 
