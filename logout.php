@@ -7,6 +7,3 @@ $_SESSION = [];
 
 header('Location: /guest.php');
 die();
-
-
-?>
