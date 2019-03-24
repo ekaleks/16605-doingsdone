@@ -85,10 +85,18 @@ if (isset($_SESSION['user']['0']['id'])) {
 }
 
 $content = include_template('add.php', [
-    'user' => $user, 'connect' => $connect, 'form' => $form, 'projects' => $projects,
+    'user' => $user,
+    'connect' => $connect,
+    'form' => $form,
+    'projects' => $projects,
     'errors' => $errors
 ]);
 
-$layout = include_template('layout.php', ['connect' => $connect, 'projects' => $projects, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
+$layout = include_template('layout.php', [
+    'connect' => $connect,
+    'projects' => $projects,
+    'content' => $content,
+    'title' => 'Дела в порядке',
+    'user' => $user]);
 
 print($layout);

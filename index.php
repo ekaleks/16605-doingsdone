@@ -42,13 +42,10 @@ if (isset($_SESSION['user']['0']['id'])) {
         }
     }
 
-
-
     if (isset($_GET['id'])) {
         $project_id = (int)$_GET['id'];
         $result_sql = get_tasks_for_user_and_project($connect, $user, $project_id);
         $tasks = $result_sql;
-
         if ($result_sql === []) {
             $content = include_template('error.php', []);
         } else {
@@ -60,7 +57,13 @@ if (isset($_SESSION['user']['0']['id'])) {
                 }
             };
 
-            $content = include_template('index.php', ['check' => $check, 'user' => $user, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks]);
+            $content = include_template('index.php', [
+                'check' => $check,
+                'user' => $user,
+                'connect' => $connect,
+                'tasks' => $tasks,
+                'projects' => $projects,
+                'show_complete_tasks' => $show_complete_tasks]);
         }
     } else {
         $tasks = get_tasks_for_user($connect, $user);
@@ -134,7 +137,13 @@ if (isset($_SESSION['user']['0']['id'])) {
                 };
             }
         }
-        $content = include_template('index.php', ['check' => $check, 'connect' => $connect, 'tasks' => $tasks, 'projects' => $projects, 'show_complete_tasks' => $show_complete_tasks, 'user' => $user]);
+        $content = include_template('index.php', [
+            'check' => $check,
+            'connect' => $connect,
+            'tasks' => $tasks,
+            'projects' => $projects,
+            'show_complete_tasks' => $show_complete_tasks,
+            'user' => $user]);
     }
 } else {
     header('Location: /guest.php');
@@ -145,8 +154,11 @@ if (isset($_SESSION['user']['0']['id'])) {
 $layout = include_template(
     'layout.php',
     [
-        'projects' => $projects, 'tasks' => $tasks, 'connect' => $connect,
-        'content' => $content, 'title' => 'Дела в порядке'
+        'projects' => $projects,
+        'tasks' => $tasks,
+        'connect' => $connect,
+        'content' => $content,
+        'title' => 'Дела в порядке'
     ]
 );
 

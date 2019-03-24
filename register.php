@@ -7,7 +7,6 @@ $required_fields = [];
 $errors = [];
 $users = [];
 $user_email = [];
-$error_field = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required_fields = ['email', 'password', 'name'];
@@ -44,10 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 $content = include_template('register.php', [
-    'projects' => $projects, 'connect' => $connect, 'users' => $users, 'errors' => $errors,
-    'error_field' => $error_field
+    'projects' => $projects,
+    'connect' => $connect,
+    'users' => $users,
+    'errors' => $errors
 ]);
 
-$layout = include_template('layout.php', ['content' => $content, 'title' => 'Дела в порядке']);
+$layout = include_template('layout.php', [
+    'content' => $content,
+    'title' => 'Дела в порядке']);
 
 print($layout);

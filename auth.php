@@ -61,11 +61,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$content = include_template('auth.php', ['form' => $form, 'errors' => $errors, 'error_email' => $error_email]);
+$content = include_template('auth.php', [
+    'form' => $form,
+    'errors' => $errors,
+    'error_email' => $error_email]);
 
 $layout = include_template(
-    'layout.php',
-    ['connect' => $connect, 'content' => $content, 'title' => 'Дела в порядке']
+    'layout.php', [
+    'connect' => $connect,
+    'content' => $content,
+    'title' => 'Дела в порядке']
 );
 
 print($layout);

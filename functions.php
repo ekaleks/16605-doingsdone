@@ -1,5 +1,6 @@
 <?php
- // подключение сессии
+
+// подключение сессии
 session_start();
 
 error_reporting(E_ALL);
@@ -7,7 +8,15 @@ ini_set('display_errors', 1);
 
 require('mysql_helper.php');
 
-//Функция шаблонизатор
+
+/**
+ * Функция - шаблонизатор
+ *
+ * @param $name Имя файла шаблона
+ * @param array $data Данные для этого шаблона
+ *
+ * @return $result Итоговый HTML-код с подставленными данными
+ */
 function include_template($name, $data)
 {
     $name = 'templates/' . $name;
@@ -26,10 +35,13 @@ function include_template($name, $data)
     return $result;
 };
 
-/*
- Проверяет, что переданная дата соответствует формату ДД.ММ.ГГГГ
- @param string $date строка с датой
- @return bool
+
+/**
+ * Проверяет, что переданная дата соответствует формату ДД.ММ.ГГГГ
+ *
+ * @param string $date строка с датой
+ *
+ * @return bool
  */
 function check_date_format($date)
 {
@@ -42,7 +54,16 @@ function check_date_format($date)
 }
 
 
-//Функция подсчитывающая количество задач в проекте
+
+/**
+ * Подсчитывает количество задач в проекте
+ *
+ * @param $connect Ресурс соединения
+ * @param string $projectName Строка с названием проекта
+ * @param array $data Данные для запроса из базы SQL
+ *
+ * @return integer $count Количество задач
+ */
 function countTasksInProject($connect, $projectName, $data)
 {
     $tasks = get_category_tasks_for_user($connect, $data);
@@ -56,8 +77,14 @@ function countTasksInProject($connect, $projectName, $data)
 };
 
 
-
-//Функция получающая из БД список категорий задач для сравнения их с названиями проектов
+/**
+ * Получает из БД список категорий задач
+ *
+ * @param $connect Ресурс соединения
+ * @param array $data Данные для запроса из базы SQL
+ *
+ * @return array $result Массив с категориями задач
+ */
 function get_category_tasks_for_user($connect, $data)
 {
     $sql_query = 'SELECT p.title AS category FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ?';
@@ -71,7 +98,16 @@ function get_category_tasks_for_user($connect, $data)
     return $result;
 };
 
-//Функция получающая из БД список задач для текущего юзера и проекта
+
+/**
+ * Получает из БД список задач для текущего юзера и проекта
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data1 Id юзера для запроса из базы SQL
+ * @param integer $data2 Id проекта для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_user_and_project($connect, $data1, $data2)
 {
     $data = [$data1, $data2];
@@ -86,7 +122,15 @@ function get_tasks_for_user_and_project($connect, $data1, $data2)
     return $result;
 };
 
-//Функция получающая из БД список задач на текущую дату
+
+/**
+ * Получает из БД список задач для юзера на текущую дату
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_user_now($connect, $data)
 {
     $data = [$data];
@@ -101,7 +145,14 @@ function get_tasks_for_user_now($connect, $data)
     return $result;
 };
 
-//Функция получающая из БД список задач на завтра
+/**
+ * Получает из БД список задач для юзера на завтрашнюю дату
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_user_tomorrow($connect, $data)
 {
     $data = [$data];
@@ -116,7 +167,15 @@ function get_tasks_for_user_tomorrow($connect, $data)
     return $result;
 };
 
-//Функция получающая из БД список просроченых задач
+
+/**
+ * Получает из БД список просроченых задач для юзера
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_user_yesterday($connect, $data)
 {
     $data = [$data];
@@ -132,8 +191,14 @@ function get_tasks_for_user_yesterday($connect, $data)
 };
 
 
-
-//Функция получающая из БД список проектов для текущего юзера
+/**
+ * Получает из БД список проектов для текущего юзера
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив проектов
+ */
 function get_projects_for_user($connect, $data)
 {
     $data = [$data];
@@ -148,8 +213,15 @@ function get_projects_for_user($connect, $data)
     return $result;
 };
 
-//Функция проверяющая наличие проекта с определенным названием в БД
-
+/**
+ * Проверяет наличие проекта с определенным названием в БД
+ *
+ * @param $connect Ресурс соединения
+ * @param string $data1 Название проекта для запроса из базы SQL
+ * @param integer $data2 Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив проектов
+ */
 function get_projects_with_title_for_user($connect, $data1, $data2)
 {
     $data = [$data1, $data2];
@@ -164,8 +236,14 @@ function get_projects_with_title_for_user($connect, $data1, $data2)
     return $result;
 };
 
-
-//Функция получающая из БД список задач для текущего юзера
+/**
+ * Получает из БД список задач для текущего юзера
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id юзера для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_user($connect, $data)
 {
     $data = [$data];
@@ -180,7 +258,14 @@ function get_tasks_for_user($connect, $data)
     return $result;
 };
 
-//Функция получающая из БД список задач для текущего проекта
+/**
+ * Получает из БД список задач для текущего проекта
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id проекта для запроса из базы SQL
+ *
+ * @return array $result Массив задач
+ */
 function get_tasks_for_project($connect, $data)
 {
     $data = [$data];
@@ -195,8 +280,14 @@ function get_tasks_for_project($connect, $data)
     return $result;
 };
 
-//функция добавляющая новую задачу в БД для текущего проекта
-
+/**
+ * Добавляет в БД новую задачу
+ *
+ * @param $connect Ресурс соединения
+ * @param array $data Данные для запроса из базы SQL
+ *
+ * @return bool
+ */
 function put_task_in_database($connect, $data)
 {
     $sql_query = 'INSERT INTO tasks (title, user_file, deadline, project_id) VALUES (?, ?, ?, ?)';
@@ -209,7 +300,14 @@ function put_task_in_database($connect, $data)
     return $result;
 };
 
-
+/**
+ * Добавляет в БД новый проект
+ *
+ * @param $connect Ресурс соединения
+ * @param array $data Данные для запроса из базы SQL
+ *
+ * @return bool
+ */
 function put_project_in_database($connect, $data)
 {
     $sql_query = 'INSERT INTO projects (title, user_id) VALUES (?, ?)';
@@ -222,9 +320,15 @@ function put_project_in_database($connect, $data)
     return $result;
 };
 
-//Функция получающая из БД список юзеров
 
-
+/**
+ * Получает из БД список email-ов юзеров по email
+ *
+ * @param $connect Ресурс соединения
+ * @param string $data Email юзера для запроса из базы SQL
+ *
+ * @return array $result Массив юзеров
+ */
 function get_email_for_user($connect, $data)
 {
     $data = [$data];
@@ -239,6 +343,14 @@ function get_email_for_user($connect, $data)
     return $result;
 };
 
+/**
+ * Получает из БД список юзеров по email
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Email юзера для запроса из базы SQL
+ *
+ * @return array $result Массив юзеров
+ */
 function get_user($connect, $data)
 {
     $data = [$data];
@@ -253,8 +365,14 @@ function get_user($connect, $data)
     return $result;
 };
 
-
-//функция добавляющая нового юзера в БД
+/**
+ * Добавляет в БД нового юзера
+ *
+ * @param $connect Ресурс соединения
+ * @param array $data Данные для запроса из базы SQL
+ *
+ * @return bool
+ */
 function put_user_in_database($connect, $data)
 {
     $sql_query = 'INSERT INTO users (e_mail, password, name) VALUES (?, ?, ?)';
@@ -267,8 +385,14 @@ function put_user_in_database($connect, $data)
     return $result;
 };
 
-
-// функция меняющая статус задачи на 'выполнено'
+/**
+ * Меняет статус задачи на 'выполнено'
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id задачи для запроса из базы SQL
+ *
+ * @return bool
+ */
 function update_tasks_status_check($connect, $data)
 {
     $data = [$data];
@@ -282,8 +406,14 @@ function update_tasks_status_check($connect, $data)
     return $result;
 };
 
-
-// функция меняющая статус задачи на 'невыполнено'
+/**
+ * Меняет статус задачи на 'невыполнено'
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id задачи для запроса из базы SQL
+ *
+ * @return bool
+ */
 function update_tasks_status_not_check($connect, $data)
 {
     $data = [$data];
@@ -297,7 +427,14 @@ function update_tasks_status_not_check($connect, $data)
     return $result;
 };
 
-// функция получающая статус задачи
+/**
+ * Получает статус задачи
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data Id задачи для запроса из базы SQL
+ *
+ * @return array $result Массив со статусом задачи
+ */
 function get_status_task($connect, $data)
 {
     $data = [$data];

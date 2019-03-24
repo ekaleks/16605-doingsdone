@@ -58,10 +58,17 @@ if (isset($_SESSION['user']['0']['id'])) {
 
 
 $content = include_template('addProject.php', [
-    'user' => $user, 'connect' => $connect, 'projects' => $projects,
+    'user' => $user,
+    'connect' => $connect,
+    'projects' => $projects,
     'errors' => $errors
 ]);
 
-$layout = include_template('layout.php', ['projects' => $projects, 'connect' => $connect, 'content' => $content, 'title' => 'Дела в порядке', 'user' => $user]);
+$layout = include_template('layout.php', [
+    'projects' => $projects,
+    'connect' => $connect,
+    'content' => $content,
+    'title' => 'Дела в порядке',
+    'user' => $user]);
 
 print($layout);
