@@ -4,23 +4,26 @@ require_once('functions.php');
 require_once('connect.php');
 
 $user = [];
-
 if (isset($_SESSION['user']['0']['id'])) {
     $user = $_SESSION['user']['0']['id'];
+
+    $projects = get_projects_for_user($connect, $user);
+
     // показывать или нет выполненные задачи
-
     $show_complete_tasks = 0;
-
     if (isset($_GET['show_completed'])) {
         $show_complete_tasks = $_GET['show_completed'];
     }
 
     $project_id = null;
+    $task_id = null;
+    $task = null;
+    $tasks = null;
     $result_sql = null;
     $check = 0;
+    $status = 0;
 
-
-    $projects = get_projects_for_user($connect, $user);
+    $search = null;
 
     if (isset($_GET['task_id']) && isset($_GET['check'])) {
 
@@ -42,9 +45,35 @@ if (isset($_SESSION['user']['0']['id'])) {
         }
     }
 
+
     if (isset($_GET['id'])) {
         $project_id = (int)$_GET['id'];
         $result_sql = get_tasks_for_user_and_project($connect, $user, $project_id);
+        $tasks = $result_sql;
+
+        if ($result_sql === []) {
+            $content = include_template('error.php', []);
+        }
+        else {
+            foreach ($tasks as $key => $task) {
+                if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
+                    $tasks[$key]['is_important'] = true;
+                } else {
+                    $tasks[$key]['is_important'] = false;
+                }
+            };
+
+            $content = include_template('index.php', [
+                'check' => $check,
+                'user' => $user,
+                'connect' => $connect,
+                'tasks' => $tasks,
+                'projects' => $projects,
+                'show_complete_tasks' => $show_complete_tasks]);
+        }
+    } else if (isset($_GET['search'])) {
+        $search = $_GET['search'];
+        $result_sql = get_task_for_search($connect, $user, $search);
         $tasks = $result_sql;
         if ($result_sql === []) {
             $content = include_template('error.php', []);
@@ -63,10 +92,20 @@ if (isset($_SESSION['user']['0']['id'])) {
                 'connect' => $connect,
                 'tasks' => $tasks,
                 'projects' => $projects,
-                'show_complete_tasks' => $show_complete_tasks]);
+                'show_complete_tasks' => $show_complete_tasks
+            ]);
         }
-    } else {
-        $tasks = get_tasks_for_user($connect, $user);
+    }
+
+    else {
+
+        if ($show_complete_tasks === 0) {
+            $status = 0;
+            $tasks = get_tasks_for_user_not_check($connect, $user, $status);
+        }
+        else {
+            $tasks = get_tasks_for_user($connect, $user);
+        }
 
         foreach ($tasks as $key => $task) {
             if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
@@ -78,65 +117,33 @@ if (isset($_SESSION['user']['0']['id'])) {
 
         if (isset($_GET['filter'])) {
 
-            if ($_GET['filter'] === 'all') {
+            $filter = $_GET['filter'];
+
+            if ($filter === 'all') {
+
                 $result_sql = get_tasks_for_user($connect, $user);
-
-                $tasks = $result_sql;
-
-                foreach ($tasks as $key => $task) {
-                    if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
-                        $tasks[$key]['is_important'] = true;
-                    } else {
-                        $tasks[$key]['is_important'] = false;
-                    }
-                };
+                $tasks = filter_date($result_sql);
             }
 
-            if ($_GET['filter'] === 'now') {
+            if ($filter === 'now') {
+
                 $result_sql = get_tasks_for_user_now($connect, $user);
-
-                $tasks = $result_sql;
-
-                foreach ($tasks as $key => $task) {
-                    if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
-                        $tasks[$key]['is_important'] = true;
-                    } else {
-                        $tasks[$key]['is_important'] = false;
-                    }
-                };
+                $tasks = filter_date($result_sql);
             }
 
-
-            if ($_GET['filter'] === 'tomorrow') {
+            if ($filter === 'tomorrow') {
 
                 $result_sql = get_tasks_for_user_tomorrow($connect, $user);
-
-                $tasks = $result_sql;
-
-                foreach ($tasks as $key => $task) {
-                    if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
-                        $tasks[$key]['is_important'] = true;
-                    } else {
-                        $tasks[$key]['is_important'] = false;
-                    }
-                };
+                $tasks = filter_date($result_sql);
             }
 
-            if ($_GET['filter'] === 'yesterday') {
+            if ($filter === 'yesterday') {
 
                 $result_sql = get_tasks_for_user_yesterday($connect, $user);
-
-                $tasks = $result_sql;
-
-                foreach ($tasks as $key => $task) {
-                    if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
-                        $tasks[$key]['is_important'] = true;
-                    } else {
-                        $tasks[$key]['is_important'] = false;
-                    }
-                };
-            }
+                $tasks = filter_date($result_sql);
         }
+    }
+
         $content = include_template('index.php', [
             'check' => $check,
             'connect' => $connect,
@@ -145,7 +152,9 @@ if (isset($_SESSION['user']['0']['id'])) {
             'show_complete_tasks' => $show_complete_tasks,
             'user' => $user]);
     }
-} else {
+}
+
+else {
     header('Location: /guest.php');
     die();
 }

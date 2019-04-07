@@ -259,6 +259,30 @@ function get_tasks_for_user($connect, $data)
 };
 
 /**
+ * Получает из БД список задач для текущего юзера
+ *
+ * @param $connect Ресурс соединения
+ * @param integer $data1 Id юзера для запроса из базы SQL
+ * @param integer $data2 Статус задачи
+ *
+ * @return array $result Массив задач
+ */
+function get_tasks_for_user_not_check($connect, $data1, $data2)
+{
+    $data = [$data1, $data2];
+    $sql_query = 'SELECT t.id AS task_id, t.title AS name, user_file, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ? AND status = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+
+/**
  * Получает из БД список задач для текущего проекта
  *
  * @param $connect Ресурс соединения
@@ -439,6 +463,42 @@ function get_status_task($connect, $data)
 {
     $data = [$data];
     $sql_query = 'SELECT status AS is_done FROM tasks WHERE id = ?';
+    $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+function filter_date($data) {
+
+    $tasks = $data;
+
+    foreach ($tasks as $key => $task) {
+        if ((floor((strtotime($task['date']) - time()) / 3600)) <= 24 && (strtotime($task['date'])) !== false && $task['is_done'] == false) {
+            $tasks[$key]['is_important'] = true;
+        } else {
+            $tasks[$key]['is_important'] = false;
+        }
+    };
+    return $tasks;
+};
+
+/**
+ * Получает результат поиска
+ *
+ * @param $connect Ресурс соединения
+ * @param string $data Данные строки поиска для запроса из базы SQL
+ *
+ * @return array $result Массив со статусом задачи
+ */
+function get_task_for_search($connect, $data1, $data2)
+{
+    $data = [$data1, $data2];
+    $sql_query = 'SELECT t.id AS task_id, t.title AS name, user_file, DATE_FORMAT(deadline, "%d.%m.%Y") AS date, p.title AS category, status AS is_done FROM tasks t JOIN projects p ON t.project_id = p.id WHERE user_id = ? AND MATCH(t.title) AGAINST (? IN BOOLEAN MODE)';
     $stmt = db_get_prepare_stmt($connect, $sql_query, $data);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
