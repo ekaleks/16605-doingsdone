@@ -1,0 +1,14 @@
+{
+    "name": "16605/doingsdone",
+    "description": "Web-site for time management",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alekseeva Ekaterina",
+            "email": "klem4@yandex.ru"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}

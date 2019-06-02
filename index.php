@@ -72,7 +72,7 @@ if (isset($_SESSION['user']['0']['id'])) {
                 'show_complete_tasks' => $show_complete_tasks]);
         }
     } else if (isset($_GET['search'])) {
-        $search = $_GET['search'];
+        $search = trim($_GET['search']);
         $result_sql = get_task_for_search($connect, $user, $search);
         $tasks = $result_sql;
         if ($result_sql === []) {
