@@ -493,7 +493,7 @@ function filter_date($data) {
  * @param $connect Ресурс соединения
  * @param string $data Данные строки поиска для запроса из базы SQL
  *
- * @return array $result Массив со статусом задачи
+ * @return array $result Массив с результатом поиска
  */
 function get_task_for_search($connect, $data1, $data2)
 {
@@ -508,3 +508,38 @@ function get_task_for_search($connect, $data1, $data2)
 
     return $result;
 };
+
+/**
+ * Получает список задач для отправки на почту юзерам
+ *
+ * @param $connect Ресурс соединения
+ *
+ * @return array $result Массив со списком задач
+ */
+function get_tasks_for_sending_letter($connect)
+{
+    $sql_query = 'SELECT title AS name, DATE_FORMAT(deadline, "%d.%m.%Y") AS date FROM tasks WHERE status = 0 and deadline <= NOW() and deadline >= DATE_SUB(NOW(), INTERVAL 24 HOUR)';
+    $result =  mysqli_query($connect, $sql_query);
+    if ($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+};
+
+/**
+ * Получает список юзеров для отправки им почты
+ *
+ * @param $connect Ресурс соединения
+ *
+ * @return array $result Массив юзеров
+ */
+function get_users_for_sending_letter($connect) {
+    $sql_query = 'SELECT e_mail AS email, name FROM users';
+    $result =  mysqli_query($connect, $sql_query);
+    if ($result) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    return $result;
+}
